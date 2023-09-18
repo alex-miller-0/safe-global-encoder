@@ -8,11 +8,11 @@ const input = JSON.parse(inputJson)
 
 const types = []
 const values = []
-for (const item of input.parameters) {
+input.parameters.forEach((item) => {
   types.push(item.type)
   values.push(item.value)
-}
-const method = ethers.keccak256(Buffer.from(`${input.name}(${types.join(',')})`)).slice(2, 10)
-
+})
+const method = `${input.method}(${types.join(',')})`
+const sig = ethers.keccak256(Buffer.from(method)).slice(2, 10)
 const encoded = coder.encode(types, values)
-console.log(method + encoded.slice(2))
+console.log(sig + encoded.slice(2))
